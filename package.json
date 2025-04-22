@@ -40,6 +40,14 @@
   "bugs": {
     "url": "https://github.com/tdanks2000/favigen/issues"
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "packageManager": "pnpm@10.8.0",
   "dependencies": {
     "commander": "^13.1.0",
