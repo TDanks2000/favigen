@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "ES2020", // modern enough to support async/await out of the box
+    "module": "CommonJS", // Node’s default module system
+    "lib": ["ES2020"], // include standard library features
+    "outDir": "./dist", // where compiled JS goes
+    "rootDir": "./src", // where your .ts source lives
+    "strict": true, // enable all strict type‑checking options
+    "esModuleInterop": true, // allow default imports from CommonJS modules
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true // speed up compilation by skipping .d.ts checks
+  },
+  "include": ["src"], // compile everything in src/
+  "exclude": ["node_modules", "dist"] // don’t compile deps or our compiled output
+}
