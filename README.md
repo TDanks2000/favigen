@@ -1,5 +1,11 @@
 # Favigen - Favicon Generator CLI
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/favigen"><img src="https://img.shields.io/npm/v/favigen.svg" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/favigen"><img src="https://img.shields.io/npm/dm/favigen.svg" alt="npm downloads"></a>
+  <a href="https://github.com/tdanks2000/favigen/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/favigen.svg" alt="License: ISC"></a>
+</p>
+
 A command-line tool to generate favicons, PNG icons, web manifest, and browser configuration files for your web projects.
 
 ## Features
@@ -110,6 +116,10 @@ pnpm run build
 pnpm run generate
 ```
 
-## License
+<br/>
 
-ISC
+<p align="center">
+<a target="_blank" href="https://tdanks.com/mental-health/quote">
+❤️ Reminder that <strong\><i\>you are great, you are enough, and your presence is valued.</i\>\</strong\> If you are struggling with your mental health, please reach out to someone you love and consult a professional. You are not alone. ❤️
+</a>
+</p>
