@@ -1,6 +1,6 @@
 {
   "name": "favigen",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A fast and easy-to-use CLI tool to generate favicons and icons for web apps from a single image.",
   "bin": {
     "favigen": "./dist/generator.js"
