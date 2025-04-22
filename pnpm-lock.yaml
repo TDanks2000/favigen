@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  favigen: 'link:'
+
 importers:
 
   .:
@@ -11,12 +14,12 @@ importers:
       commander:
         specifier: ^13.1.0
         version: 13.1.0
+      favigen:
+        specifier: 'link:'
+        version: 'link:'
       fs-extra:
         specifier: ^11.3.0
         version: 11.3.0
-      install:
-        specifier: ^0.13.0
-        version: 0.13.0
       picocolors:
         specifier: ^1.1.1
         version: 1.1.1
@@ -714,10 +717,6 @@ packages:
     resolution: {integrity: sha512-6TDAlDPZxUFCv+fuOkIoXT/V/f3Qbq8e37p+YOiYrUv3v9cc3/6x78VdfPgFVaB9dZYeLUfKgHRebpkm/oP2VQ==}
     engines: {node: '>=0.10.0'}
     hasBin: true
-
-  install@0.13.0:
-    resolution: {integrity: sha512-zDml/jzr2PKU9I8J/xyZBQn8rPCAY//UOYNmR01XwNwyfhEWObo2SWfSl1+0tm1u6PhxLwDnfsT/6jB7OUxqFA==}
-    engines: {node: '>= 0.10'}
 
   ip-regex@1.0.3:
     resolution: {integrity: sha512-HjpCHTuxbR/6jWJroc/VN+npo5j0T4Vv2TAI5qdEHQx7hsL767MeccGFSsLtF694EiZKTSEqgoeU6DtGFCcuqQ==}
@@ -1676,8 +1675,6 @@ snapshots:
       sshpk: 1.18.0
 
   image-size@0.5.5: {}
-
-  install@0.13.0: {}
 
   ip-regex@1.0.3: {}
 
