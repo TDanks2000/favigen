@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Command } from "commander";
 import fs from "fs-extra";
 import path from "path";
@@ -28,8 +29,14 @@ program
   .option("--manifest", "Generate site.webmanifest", false)
   .option("--browserconfig", "Generate browserconfig.xml", false)
   .option("--app-name <name>", "Name for HTML manifest", "App")
-  .option("--theme-color <color>", "Theme color for manifest/browserconfig")
-  .parse(process.argv);
+  .option("--theme-color <color>", "Theme color for manifest/browserconfig");
+
+if (process.argv.length <= 2) {
+  console.log(pc.yellow("⚠ No arguments supplied. Use --help to see usage."));
+  process.exit(0);
+}
+
+program.parse(process.argv);
 
 interface Opts {
   input: string;
