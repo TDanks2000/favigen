@@ -4,7 +4,6 @@
   <a href="https://www.npmjs.com/package/favigen"><img src="https://img.shields.io/npm/v/favigen.svg" alt="npm version"></a>
   <a href="https://www.npmjs.com/package/favigen"><img src="https://img.shields.io/npm/dm/favigen.svg" alt="npm downloads"></a>
   <a href="https://github.com/tdanks2000/favigen/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/favigen.svg" alt="License: ISC"></a>
-  <a href="https://github.com/tdanks2000/favigen/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/tdanks2000/favigen/build.yml?branch=main" alt="Build Status"></a>
 </p>
 
 A command-line tool to generate favicons, PNG icons, web manifest, and browser configuration files for your web projects.
