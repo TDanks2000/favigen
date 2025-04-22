@@ -1,16 +1,18 @@
 {
   "name": "favigen",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A fast and easy-to-use CLI tool to generate favicons and icons for web apps from a single image.",
   "bin": {
     "favigen": "./dist/generator.js"
   },
   "scripts": {
-    "build": "tsup",
-    "generate": "pnpm run build && node dist/generator.mjs --dry-run",
+    "build": "tsup --config tsup.config.ts",
+    "generate": "pnpm run build && node dist/generator.js --dry-run",
     "favigen": "pnpm run generate",
     "pub:release": "pnpm build && npm publish"
   },
+  "type": "module",
+  "exports": "./dist/generator.js",
   "keywords": [
     "favicon",
     "favicon-generator",
@@ -52,6 +54,7 @@
   "packageManager": "pnpm@10.8.0",
   "dependencies": {
     "commander": "^13.1.0",
+    "favigen": "link:",
     "fs-extra": "^11.3.0",
     "install": "^0.13.0",
     "picocolors": "^1.1.1",
