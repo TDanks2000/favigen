@@ -1,5 +1,4 @@
+ignoredBuiltDependencies:
+  - esbuild
 onlyBuiltDependencies:
   - sharp
-
-overrides:
-  favigen: 'link:'

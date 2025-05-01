@@ -1,70 +1,66 @@
 {
-  "name": "favigen",
-  "version": "1.0.6",
-  "description": "A fast and easy-to-use CLI tool to generate favicons and icons for web apps from a single image.",
-  "bin": {
-    "favigen": "./dist/generator.js"
-  },
-  "scripts": {
-    "build": "tsup --config tsup.config.ts",
-    "generate": "pnpm run build && node dist/generator.js --dry-run",
-    "favigen": "pnpm run generate",
-    "pub:release": "pnpm build && npm publish"
-  },
-  "type": "module",
-  "exports": "./dist/generator.js",
-  "keywords": [
-    "favicon",
-    "favicon-generator",
-    "icon-generator",
-    "cli-tool",
-    "favicon-cli",
-    "generate-icons",
-    "web-icons",
-    "favicons",
-    "manifest-icons",
-    "favicon automation",
-    "sharp",
-    "ico",
-    "png to ico",
-    "png to favicon",
-    "webdev"
-  ],
-  "author": {
-    "name": "TDanks2000",
-    "url": "https://github.com/tdanks2000"
-  },
-  "license": "MIT",
-  "homepage": "https://github.com/tdanks2000/favigen#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tdanks2000/favigen.git"
-  },
-  "bugs": {
-    "url": "https://github.com/tdanks2000/favigen/issues"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
-  "packageManager": "pnpm@10.8.0",
-  "dependencies": {
-    "commander": "^13.1.0",
-    "favigen": "link:",
-    "fs-extra": "^11.3.0",
-    "picocolors": "^1.1.1",
-    "sharp": "^0.34.1",
-    "to-ico": "^1.1.5"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "^11.0.4",
-    "@types/node": "^22.14.1",
-    "@types/to-ico": "^1.1.3",
-    "tsup": "^8.4.0",
-    "typescript": "^5.8.3"
-  }
+	"name": "favigen",
+	"version": "1.1.0",
+	"description": "A fast and easy-to-use CLI tool to generate favicons and icons for web apps from a single image.",
+	"bin": {
+		"favigen": "./dist/generator.js"
+	},
+	"scripts": {
+		"build": "tsup --config tsup.config.ts",
+		"generate": "pnpm run build && node dist/generator.js -i ./test/test-image.png ",
+		"favigen": "pnpm run generate",
+		"pub:release": "pnpm build && npm publish"
+	},
+	"type": "module",
+	"exports": "./dist/generator.js",
+	"keywords": [
+		"favicon",
+		"favicon-generator",
+		"icon-generator",
+		"cli-tool",
+		"favicon-cli",
+		"generate-icons",
+		"web-icons",
+		"favicons",
+		"manifest-icons",
+		"favicon automation",
+		"sharp",
+		"ico",
+		"png to ico",
+		"png to favicon",
+		"webdev"
+	],
+	"author": {
+		"name": "TDanks2000",
+		"url": "https://github.com/tdanks2000"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/tdanks2000/favigen#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/tdanks2000/favigen.git"
+	},
+	"bugs": {
+		"url": "https://github.com/tdanks2000/favigen/issues"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"packageManager": "pnpm@10.10.0",
+	"dependencies": {
+		"commander": "^13.1.0",
+		"sharp": "^0.34.1"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.0.0-beta.2",
+		"@types/fs-extra": "^11.0.4",
+		"@types/node": "^22.15.3",
+		"tsup": "^8.4.0",
+		"typescript": "^5.8.3"
+	}
 }
