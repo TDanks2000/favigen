@@ -6,17 +6,21 @@
   <a href="https://github.com/tdanks2000/favigen/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/favigen.svg" alt="License: ISC"></a>
 </p>
 
-A command-line tool to generate favicons, PNG icons, web manifest, and browser configuration files for your web projects.
+🎨 A modern command-line tool to generate favicons, PNG icons, web manifest, and browser configuration files for your web projects.
 
-## Features
+**Now supports output to any directory on your filesystem!**
 
-- Generates favicon.ico file
-- Creates multiple PNG icons in different sizes
-- Automatically detects theme color from input image
-- Generates site.webmanifest for PWA support
-- Creates browserconfig.xml for Microsoft browsers
-- Supports PNG, JPEG, and WebP input formats
-- Dry-run mode for testing
+## ✨ Features
+
+- 🎯 **Flexible Output Paths**: Generate files anywhere on your filesystem
+- 🖼️ **Multiple Formats**: Generates favicon.ico and PNG icons in various sizes
+- 🎨 **Smart Theme Detection**: Automatically detects theme color from input image
+- 📱 **PWA Ready**: Generates site.webmanifest for Progressive Web App support
+- 🪟 **Windows Tiles**: Creates browserconfig.xml for Microsoft browsers
+- 🔧 **Multiple Input Formats**: Supports PNG, JPEG, and WebP input formats
+- 👀 **Preview Mode**: Dry-run mode for testing without writing files
+- 🛡️ **Safe Operations**: Smart path validation with user confirmation for external directories
+- 💬 **Enhanced UX**: Beautiful console output with clear progress indicators
 
 ## Installation
 
@@ -30,91 +34,105 @@ Or install locally in your project:
 npm install favigen
 ```
 
-## Usage
+## 🚀 Usage
 
 ```bash
 favigen -i <input-file> [options]
 ```
 
-### Required Options
+### 📋 Options
 
+#### Required
 - `-i, --input <file>`: Source image file (PNG/JPEG/WebP recommended)
+  - Supports absolute and relative paths
 
-### Optional Options
-
+#### Optional
 - `-o, --output <dir>`: Output directory (default: "icons")
-- `-s, --sizes <list>`: Comma-separated icon sizes for PNG generation (default: "16,32,48,64,128,256,180,150,70")
-- `-y, --yes`: Overwrite existing files without prompting
-- `--dry-run`: Simulate generation without writing files
-- `--manifest`: Generate site.webmanifest
-- `--browserconfig`: Generate browserconfig.xml
-- `--app-name <name>`: Name for HTML manifest (default: "App")
-- `--theme-color <color>`: Theme color for manifest/browserconfig (auto-detected if not specified)
+  - **NEW**: Supports any filesystem path!
+  - Examples: `./icons`, `/home/user/assets`, `C:\assets`
+- `-s, --sizes <list>`: Comma-separated icon sizes for PNG generation
+  - Default: "16,32,48,64,128,256,180,150,70"
+- `-y, --yes`: Auto-confirm all prompts (overwrite files, external paths)
+- `--dry-run`: Preview operations without writing files
+- `--manifest`: Generate site.webmanifest for PWA support
+- `--browserconfig`: Generate browserconfig.xml for Windows tiles
+- `--app-name <name>`: Application name for manifest files (default: "App")
+- `--theme-color <color>`: Theme color (hex) for manifest/browserconfig
+  - Auto-detected from image if not specified
 
-## Examples
+## 💡 Examples
 
 ### Basic Usage
-
-Generate favicon.ico and PNG icons:
-
 ```bash
+# Generate in current directory
 favigen -i logo.png
+
+# Generate in specific local directory
+favigen -i logo.png -o ./assets/icons
 ```
 
-### Generate All Assets
-
-Create favicon.ico, PNG icons, web manifest, and browser config:
-
+### Cross-Filesystem Generation
 ```bash
-favigen -i logo.png --manifest --browserconfig --app-name "My App"
+# Generate to absolute path (Linux/Mac)
+favigen -i logo.png -o /home/user/website/assets/icons
+
+# Generate to absolute path (Windows)
+favigen -i logo.png -o "C:\Projects\MyWebsite\assets\icons"
+
+# Generate to network drive
+favigen -i logo.png -o "\\server\share\website\icons"
 ```
 
-### Custom Sizes
-
-Specify custom icon sizes:
-
+### Advanced Usage
 ```bash
-favigen -i logo.png -s "16,32,64,128,256"
+# Full PWA setup with custom theme
+favigen -i logo.png -o ./public/icons --manifest --browserconfig --app-name "My App" --theme-color "#ff6b6b"
+
+# Preview without writing files
+favigen -i logo.png -o /var/www/html/icons --dry-run
+
+# Auto-confirm all prompts
+favigen -i logo.png -o ../shared/assets --yes
+
+# Custom sizes only
+favigen -i logo.png -s "16,32,64,128" -o ./favicons
 ```
 
-### Custom Output Directory
+## 🛡️ Security & Safety
 
-Change the output directory:
+The enhanced version includes several safety features:
 
-```bash
-favigen -i logo.png -o ./public/assets/icons
-```
+- **Path Validation**: Validates input and output paths before processing
+- **External Path Confirmation**: Prompts for confirmation when outputting outside current directory
+- **Dry Run Mode**: Preview operations without making changes
+- **Auto-confirm Option**: Use `--yes` flag to skip prompts in automated scripts
+- **Clear Feedback**: Shows resolved absolute paths before processing
 
-## Output Files
+## 🔧 Migration from Previous Versions
 
-The tool generates the following files in the output directory:
+If you're upgrading from an earlier version:
 
-- `favicon.ico`: Multi-size ICO file for browser favorites
-- `icon-{size}x{size}.png`: PNG files in specified sizes
-- `site.webmanifest`: Web app manifest file (when --manifest is used)
-- `browserconfig.xml`: Microsoft browser configuration (when --browserconfig is used)
+- **Breaking Change**: Output paths are no longer restricted to the current working directory
+- **New Behavior**: External paths will prompt for confirmation (unless using `--yes`)
+- **Enhanced UX**: Better console output and error messages
+- **Backward Compatible**: All existing commands continue to work as before
 
-### Browser Config Sizes
+## 📁 Generated Files
 
-When generating browserconfig.xml, additional icons are created:
+The tool generates the following files in your specified output directory:
 
-- 70x70 pixels
-- 150x150 pixels
-- 310x150 pixels
-- 310x310 pixels
+- `favicon.ico` - Multi-resolution ICO file for browsers
+- `icon-{size}x{size}.png` - PNG icons in specified sizes
+- `site.webmanifest` - Web app manifest (with `--manifest` flag)
+- `browserconfig.xml` - Microsoft browser configuration (with `--browserconfig` flag)
 
-## Development
+## 🤝 Contributing
 
-```bash
-# Install dependencies
-pnpm install
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-# Build the project
-pnpm run build
+## 📄 License
 
-# Test generation
-pnpm run generate
-```
+ISC License - see LICENSE file for details.
 
 <br/>
 

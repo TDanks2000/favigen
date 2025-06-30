@@ -20,29 +20,58 @@ const program = new Command();
 program
 	.name("favigen")
 	.description(
-		"Generate favicon.ico, assorted PNG icons, webmanifest, and browserconfig",
+		"🎨 Generate favicon.ico, assorted PNG icons, webmanifest, and browserconfig\n" +
+			"   Supports output to any directory on your filesystem",
 	)
 	.version(version, "-v, --version", "Output the current version")
 	.requiredOption(
 		"-i, --input <file>",
-		"Source image file (PNG/JPEG/WebP recommended)",
+		"Source image file (PNG/JPEG/WebP recommended)\n" +
+			"Supports absolute and relative paths",
 	)
-	.option("-o, --output <dir>", "Output directory", "icons")
+	.option(
+		"-o, --output <dir>",
+		"Output directory (supports any filesystem path)\n" +
+			"Examples: ./icons, /home/user/assets, C:\\assets",
+		"icons",
+	)
 	.option(
 		"-s, --sizes <list>",
-		"Comma-separated icon sizes (PNG)",
+		"Comma-separated icon sizes for PNG generation",
 		"16,32,48,64,128,256,180,150,70",
 	)
-	.option("-y, --yes", "Overwrite existing files without prompting")
-	.option("--dry-run", "Simulate generation without writing files", false)
-	.option("--manifest", "Generate site.webmanifest", false)
-	.option("--browserconfig", "Generate browserconfig.xml", false)
-	.option("--app-name <name>", "Name for HTML manifest", "App")
-	.option("--theme-color <color>", "Theme color for manifest/browserconfig");
+	.option(
+		"-y, --yes",
+		"Auto-confirm all prompts (overwrite files, external paths)",
+	)
+	.option("--dry-run", "Preview operations without writing files", false)
+	.option("--manifest", "Generate site.webmanifest for PWA support", false)
+	.option(
+		"--browserconfig",
+		"Generate browserconfig.xml for Windows tiles",
+		false,
+	)
+	.option("--app-name <name>", "Application name for manifest files", "App")
+	.option(
+		"--theme-color <color>",
+		"Theme color (hex) for manifest/browserconfig\n" +
+			"Auto-detected from image if not specified",
+	);
 
 if (process.argv.length <= 2) {
+	console.log(colors.cyan("🎨 Favigen - Favicon Generator"));
+	console.log(
+		colors.gray("Generate favicons for any directory on your filesystem\n"),
+	);
 	console.log(
 		colors.yellow("⚠ No arguments supplied. Use --help to see usage."),
+	);
+	console.log(colors.cyan("\nQuick start:"));
+	console.log(colors.white("  favigen -i logo.png -o ./assets/icons"));
+	console.log(
+		colors.white(
+			"  favigen -i logo.png -o /home/user/website/icons --manifest",
+		),
 	);
 	process.exit(0);
 }
@@ -106,6 +135,11 @@ async function confirmOverwrite(filePath: string): Promise<boolean> {
 	return ans.trim().toLowerCase().startsWith("y");
 }
 
+async function confirmAction(message: string): Promise<boolean> {
+	const ans = await askQuestion(`${message} (y/n): `);
+	return ans.trim().toLowerCase().startsWith("y");
+}
+
 let cachedThemeColor: string | null = null;
 async function detectThemeColor(): Promise<string> {
 	if (cachedThemeColor) return cachedThemeColor;
@@ -121,7 +155,8 @@ async function detectThemeColor(): Promise<string> {
 }
 
 async function validatePathsAndInput() {
-	const inputPath = path.resolve(process.cwd(), options.input);
+	// Validate and resolve input path
+	const inputPath = path.resolve(options.input);
 	const statResult = await fsStat(inputPath).catch(() => null);
 	if (!statResult || !statResult.isFile()) {
 		console.error(
@@ -130,6 +165,7 @@ async function validatePathsAndInput() {
 		process.exit(1);
 	}
 
+	// Validate image format
 	const meta = await sharp(inputPath).metadata();
 	if (!meta.format || !["png", "jpeg", "jpg", "webp"].includes(meta.format)) {
 		console.error(
@@ -139,12 +175,53 @@ async function validatePathsAndInput() {
 	}
 	options.input = inputPath;
 
-	const outputPath = path.resolve(process.cwd(), options.output);
-	if (!outputPath.startsWith(process.cwd())) {
-		console.error(colors.red("✖ Invalid output path."));
-		process.exit(1);
+	// Validate and resolve output path - now supports any valid filesystem path
+	const outputPath = path.resolve(options.output);
+
+	// Enhanced security: Check for dangerous paths
+	const normalizedOutput = path.normalize(outputPath);
+	if (
+		normalizedOutput.includes("..") &&
+		path.relative(process.cwd(), normalizedOutput).startsWith("..")
+	) {
+		// Only warn about traversal outside cwd, don't block it
+		console.log(
+			colors.yellow(
+				`⚠ Output path is outside current directory: ${normalizedOutput}`,
+			),
+		);
+		if (!options.yes) {
+			const confirmed = await confirmAction(
+				`Continue with output path outside current directory? (${normalizedOutput})`,
+			);
+			if (!confirmed) {
+				console.log(colors.gray("Operation cancelled."));
+				process.exit(0);
+			}
+		}
 	}
+
+	// Check if output directory exists and is writable
+	try {
+		const outputDir = path.dirname(outputPath);
+		const outputDirStat = await fsStat(outputDir).catch(() => null);
+		if (outputDirStat && !outputDirStat.isDirectory()) {
+			console.error(
+				colors.red(
+					`✖ Output parent path exists but is not a directory: ${outputDir}`,
+				),
+			);
+			process.exit(1);
+		}
+	} catch (err) {
+		// Directory doesn't exist, will be created later
+	}
+
 	options.output = outputPath;
+
+	// Display resolved paths for user confirmation
+	console.log(colors.cyan(`📁 Input:  ${colors.white(options.input)}`));
+	console.log(colors.cyan(`📁 Output: ${colors.white(options.output)}`));
 }
 
 const sizes: number[] = options.sizes
@@ -268,12 +345,17 @@ async function generateBrowserConfig(themeColor: string) {
 
 (async () => {
 	try {
+		console.log(colors.cyan("🚀 Starting favicon generation..."));
+		console.log();
+
 		await validatePathsAndInput();
+		console.log();
 
 		if (!options.themeColor) {
 			const detected = await detectThemeColor();
 			console.log(colors.magenta(`🎨 Detected theme color: ${detected}`));
 			options.themeColor = detected;
+			console.log();
 		}
 
 		const buffers = await generatePngIcons();
@@ -285,8 +367,33 @@ async function generateBrowserConfig(themeColor: string) {
 		if (options.browserconfig && options.themeColor) {
 			await generateBrowserConfig(options.themeColor);
 		}
+
+		console.log();
+		console.log(colors.green("🎉 Favicon generation completed successfully!"));
+		console.log(
+			colors.cyan(`📁 Files generated in: ${colors.white(options.output)}`),
+		);
+
+		if (!options.manifest && !options.browserconfig) {
+			console.log();
+			console.log(
+				colors.gray(
+					"💡 Tip: Use --manifest and --browserconfig flags for web app support",
+				),
+			);
+		}
 	} catch (err) {
+		console.error();
 		console.error(colors.red("✖ Error:"), (err as Error).message);
+		console.error();
+		console.error(colors.gray("💡 Tips:"));
+		console.error(
+			colors.gray("  • Check that input file exists and is a valid image"),
+		);
+		console.error(colors.gray("  • Ensure output directory is writable"));
+		console.error(
+			colors.gray("  • Use absolute paths if relative paths cause issues"),
+		);
 		process.exit(1);
 	}
 })();
