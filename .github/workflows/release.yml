@@ -1,0 +1,60 @@
+name: Build, Release and Publish
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: read
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.10.0'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build package
+        run: pnpm run build
+
+      - name: Extract version from package.json
+        id: get_version
+        run: |
+          version=$(node -p 'require("./package.json").version')
+          echo "current-version=$version" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.get_version.outputs.current-version }}
+          name: Release v${{ steps.get_version.outputs.current-version }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to NPM
+        run: pnpm publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
